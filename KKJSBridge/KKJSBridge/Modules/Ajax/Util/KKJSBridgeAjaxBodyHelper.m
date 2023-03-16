@@ -36,6 +36,8 @@
     NSData *data = nil;
     NSString *bodyType = bodyRequest[@"bodyType"];
     NSString *formEnctype = bodyRequest[@"formEnctype"];
+    NSString *requestHref = bodyRequest[@"requestHref"];
+    NSString *requestUrl = bodyRequest[@"requestUrl"];
     id value = bodyRequest[@"value"];
     if (!value) {
         return;
@@ -60,7 +62,32 @@
             data = value;
         }
     }
+    NSLog(@"requestUrl=======%@", requestUrl);
+    NSLog(@"allHTTPHeaderFields=======%@", request.allHTTPHeaderFields);
+    NSMutableDictionary *dic = [request.allHTTPHeaderFields mutableCopy];
+    [dic setObject:requestHref forKey:@"referer"];
     
+//    NSMutableArray *array = [NSMutableArray array];
+//    for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:request.URL]) {
+//        NSString *value = [NSString stringWithFormat:@"%@=%@", cookie.name, cookie.value];
+//        [array addObject:value];
+//    }
+//
+//    for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://recaptcha.net"]]) {
+//        NSString *value = [NSString stringWithFormat:@"%@=%@", cookie.name, cookie.value];
+//        [array addObject:value];
+//    }
+//
+//
+//    NSLog(@"array=====%@", array);
+    
+//    
+//    if ([requestUrl containsString:@"recaptcha/enterprise"]) {
+//        [dic setObject:requestHref forKey:@"cookie"];
+//    }
+    
+    NSLog(@"dic=====%@", dic);
+    request.allHTTPHeaderFields = dic;
     request.HTTPBody = data;
 }
 

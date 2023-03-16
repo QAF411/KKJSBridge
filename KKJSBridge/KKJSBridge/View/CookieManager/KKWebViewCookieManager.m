@@ -15,13 +15,16 @@
     if (!request.URL) {
         return;
     }
+    NSLog(@"syncRequestCookie=====%@", request.URL.absoluteString);
     
-    NSArray<NSHTTPCookie *> *availableCookie = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:request.URL];
+    NSArray<NSHTTPCookie *> *availableCookie = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL: request.URL];
     if (availableCookie.count > 0) {
         NSDictionary *reqHeader = [NSHTTPCookie requestHeaderFieldsWithCookies:availableCookie];
-        NSString *cookieStr = [reqHeader objectForKey:@"Cookie"];
-        [request setValue:cookieStr forHTTPHeaderField:@"Cookie"];
+        NSString *cookieStr = [reqHeader objectForKey:@"cookie"];
+        [request setValue:cookieStr forHTTPHeaderField:@"cookie"];
     }
+    
+    NSLog(@"availableCookie=====%@", availableCookie);
 }
 
 + (void)onlySyncRequestHttpOnlyCookie:(NSMutableURLRequest *)request {

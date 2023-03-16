@@ -88,6 +88,17 @@ static NSString * const KKJSBridgeMessageName = @"KKJSBridgeMessage";
 #else
     bridgeJSName = @"KKJSBridgeAJAXHook";
 #endif
+    
+    //js注入
+//       NSString *Str = [NSString stringWithFormat:@"function %@() { return '%@';}; ", @"getJSessionId",@"123456"];
+//
+//       //创建自定义JS 注意两个参数
+//       WKUserScript *noneSelectScript = [[WKUserScript alloc] initWithSource:Str                                                            injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+//                                                            forMainFrameOnly:NO];
+//
+//       // 将自定义JS加入到配置里
+//       [self.webView.configuration.userContentController addUserScript:noneSelectScript];
+    [self.webView.configuration.userContentController addScriptMessageHandler:self name:@"ofLoginResult"];
 
     NSString *bridgeJSString = [[NSString alloc] initWithContentsOfFile:[[NSBundle bundleForClass:self.class] pathForResource:bridgeJSName ofType:@"js"] encoding:NSUTF8StringEncoding error:NULL];
     WKUserScript *userScript = [[WKUserScript alloc] initWithSource:bridgeJSString injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
@@ -108,7 +119,13 @@ static NSString * const KKJSBridgeMessageName = @"KKJSBridgeMessage";
 
 #pragma mark - WKScriptMessageHandler
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
-    if ([message.name isEqualToString:KKJSBridgeMessageName]) {
+    NSLog(@"WKScriptMessageHandler......%@, ======%@", message.name , message.body);
+    
+    if ([message.name isEqualToString:@"ofLoginResult"]) {
+        // 发出全局通知
+        // 完成登录成功即认证完成....
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"OF_LoginResult_COMPLETED" object: message.body userInfo: nil];
+    } else if ([message.name isEqualToString:KKJSBridgeMessageName]) {
         NSMutableDictionary *messageJson = [[NSMutableDictionary alloc] initWithDictionary:message.body];
         KKJSBridgeMessage *messageInstance = [self.dispatcher convertMessageFromMessageJson:messageJson];
         [self.dispatcher dispatchCallbackMessage:messageInstance];

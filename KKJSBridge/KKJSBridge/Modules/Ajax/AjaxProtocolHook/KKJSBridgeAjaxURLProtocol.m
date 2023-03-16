@@ -160,7 +160,7 @@ static NSString * const kKKJSBridgeAjaxResponseHeaderAC = @"Access-Control-Allow
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     // 清除缓存
     [self clearRequestBody];
-    
+    NSLog(@"session===%@  originalRequest===%@", session, task.originalRequest);
     if (error) {
         [self.client URLProtocol:self didFailWithError:error];
     } else {

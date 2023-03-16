@@ -46,6 +46,7 @@
  【COOKIE 1】同步首次请求的 cookie
  */
 - (nullable WKNavigation *)loadRequest:(NSURLRequest *)request {
+    NSLog(@"syncAjaxCookie=====%@", request.URL.absoluteString);
     if (request.URL.scheme.length > 0) {
         [self syncAjaxCookie];
         NSMutableURLRequest *requestWithCookie = request.mutableCopy;

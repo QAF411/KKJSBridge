@@ -68,11 +68,22 @@ static KKJSBridgeSafeDictionary *bodyCache;
     NSString *requestId = params[@"requestId"];
     bodyCache[requestId] = params;
     
+    NSLog(@"params===%@", params);
+    NSMutableDictionary *dic = [params mutableCopy];
+    [dic removeObjectForKey:@"value"];
+    NSLog(@"dic======%@", params.allKeys);
+    NSLog(@"dic======%@", params[@"requestHref"]);
+    
     if (responseCallback && requestId) {
         responseCallback(@{@"requestId": requestId,
                            @"requestUrl": params[@"requestUrl"] ? params[@"requestUrl"] : @""
                          });
     }
+}
+
+
+- (void)loginSuccuessAJAXBody:(KKJSBridgeEngine *)engine params:(NSDictionary *)params responseCallback:(void (^)(NSDictionary *responseData))responseCallback {
+    NSLog(@"loginSuccuessAJAXBody===%@", params);
 }
 
 + (NSDictionary *)getRequestBody:(NSString *)requestId {
