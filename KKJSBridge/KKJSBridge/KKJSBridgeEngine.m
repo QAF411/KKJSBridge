@@ -120,7 +120,6 @@ static NSString * const KKJSBridgeMessageName = @"KKJSBridgeMessage";
 #pragma mark - WKScriptMessageHandler
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
     NSLog(@"WKScriptMessageHandler......%@, ======%@", message.name , message.body);
-    
     if ([message.name isEqualToString:@"ofLoginResult"]) {
         // 发出全局通知
         // 完成登录成功即认证完成....

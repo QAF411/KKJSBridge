@@ -20,7 +20,7 @@
         if(response.config.url.endsWith('/users/me') && response.status === 200){
             // 发送 body 请求到 nativ
             const resStr = typeof response.response === 'string' ? response.response : JSON.stringify(response.response, getCircularReplacer())
-            console.log(typeof response.response, resStr)
+//            console.log(typeof response.response, resStr)
             window.webkit.messageHandlers.ofLoginResult.postMessage(resStr)
         }
 //      window.webkit.messageHandlers.ofLoginResult.postMessage(response.response)
