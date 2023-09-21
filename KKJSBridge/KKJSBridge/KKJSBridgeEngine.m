@@ -98,7 +98,18 @@ static NSString * const KKJSBridgeMessageName = @"KKJSBridgeMessage";
 //
 //       // 将自定义JS加入到配置里
 //       [self.webView.configuration.userContentController addUserScript:noneSelectScript];
-    [self.webView.configuration.userContentController addScriptMessageHandler:self name:@"ofLoginResult"];
+   
+    // 引入新逻辑
+    WKWebViewConfiguration *configuration = self.webView.configuration;
+    @try {
+        // code you want to execute that might throw an exception.
+        [configuration.userContentController removeScriptMessageHandlerForName:@"ofLoginResult"];
+        [configuration.userContentController addScriptMessageHandler:self name:@"ofLoginResult"];
+    }
+    @catch (NSException *exception)
+    {
+        
+    }
 
     NSString *bridgeJSString = [[NSString alloc] initWithContentsOfFile:[[NSBundle bundleForClass:self.class] pathForResource:bridgeJSName ofType:@"js"] encoding:NSUTF8StringEncoding error:NULL];
     WKUserScript *userScript = [[WKUserScript alloc] initWithSource:bridgeJSString injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
